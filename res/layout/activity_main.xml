@@ -16,7 +16,12 @@
         android:layout_marginLeft="86dp"
         android:layout_marginTop="181dp" >
     </RelativeLayout>
-
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:cropToPadding="true"
+        android:src="@drawable/main_screen"/>
     <Button
         android:background="@drawable/custom_button"
         android:id="@+id/button1"
@@ -24,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/imageView1"
+        android:layout_marginTop="2dp"
         android:text="FODMAPS Tracker" />
     
 
@@ -36,7 +42,7 @@
         android:layout_alignLeft="@+id/button1"
         android:layout_alignRight="@+id/button1"
         android:layout_below="@+id/button1"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="2dp"
         android:text="Symptom Tracker" />
 
     <Button
@@ -46,7 +52,7 @@
         android:layout_alignLeft="@+id/button2"
         android:layout_alignRight="@+id/button2"
         android:layout_below="@+id/button2"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="2dp"
         android:background="@drawable/custom_button"
         android:text="FODMAPS Shopping List" />
 
@@ -58,7 +64,7 @@
         android:layout_alignLeft="@+id/button3"
         android:layout_alignRight="@+id/button3"
         android:layout_below="@+id/button3"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="2dp"
         android:text="Activity Tracker" />
 
     <Button
@@ -69,7 +75,7 @@
         android:layout_alignLeft="@+id/button4"
         android:layout_alignRight="@+id/button4"
         android:layout_below="@+id/button4"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="2dp"
         android:text="Graphs &amp; Charts" />
 
 </RelativeLayout>

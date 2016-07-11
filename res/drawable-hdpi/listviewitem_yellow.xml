@@ -2,8 +2,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <padding android:left="7dp" android:top="7dp"
             android:right="7dp" android:bottom="7dp" />
-    <corners android:bottomRightRadius="7dp" android:bottomLeftRadius="7dp" 
-     android:topLeftRadius="7dp" android:topRightRadius="7dp"/>
         <gradient
                 android:startColor="@color/yellow1"
                 android:endColor="@color/yellow2"

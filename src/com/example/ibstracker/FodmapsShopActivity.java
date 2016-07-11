@@ -68,7 +68,7 @@ public class FodmapsShopActivity extends Activity {
 		
 		ArrayAdapter<FodmapItem> adapter = new ArrayAdapter<FodmapItem>(this, R.layout.fodmap_shop_item_red, chosenFodmapItems) {
 		    @Override
-		    public View getView(int position, View convertView, ViewGroup parent) {
+		    public View getView(final int position, View convertView, ViewGroup parent) {
 		
 		        TextView textView = (TextView)super.getView(position, convertView, parent);
 		
@@ -83,6 +83,14 @@ public class FodmapsShopActivity extends Activity {
 		        	textView = (TextView) getLayoutInflater().inflate(R.layout.fodmap_shop_item_green, null);
 		        }
 		        textView.setText(item.toString());
+				textView.setOnClickListener(new View.OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													chosenFodmapItems.remove(position);
+													populateListView();
+												}
+											}
+				);
 		        return textView;
 		    }
 		};
@@ -91,7 +99,7 @@ public class FodmapsShopActivity extends Activity {
 		listView.setAdapter(adapter);
 	}
 	
-private void populateActv() {
+	private void populateActv() {
 		
 		ArrayAdapter<FodmapItem> adapter = new ArrayAdapter<FodmapItem>(this, R.layout.fodmap_shop_item_red, knownFodmapItems) {
 		    @Override
@@ -117,8 +125,12 @@ private void populateActv() {
 		actv.setAdapter(adapter);
 	}
 	
-public class AddItemDialog extends DialogFragment{
-		
+public static class AddItemDialog extends DialogFragment{
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState){
 			super.onCreateDialog(savedInstanceState);
@@ -130,23 +142,15 @@ public class AddItemDialog extends DialogFragment{
 					public void onClick(DialogInterface dialog, int i){
 						int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
 						String item = Utils.toDisplayCase((String)getArguments().get("item"));
-						FodmapItem fm;
 						switch(selectedPosition) {
 						case 0:
-							fm = new FodmapItem(item, Fodmap.ALL_CLEAR);
-							knownFodmapItems.add(fm);
-							chosenFodmapItems.add(fm);
-							populateListView();
+							addItemAndUpdate(item, Fodmap.ALL_CLEAR);
 							break;
 						case 1:
-							fm = new FodmapItem(item, Fodmap.CAUTION);
-							knownFodmapItems.add(fm);
-							chosenFodmapItems.add(fm);
+							addItemAndUpdate(item, Fodmap.CAUTION);
 							break;
 						case 2:
-							fm = new FodmapItem(item, Fodmap.WARNING);
-							knownFodmapItems.add(fm);
-							chosenFodmapItems.add(fm);
+							addItemAndUpdate(item, Fodmap.WARNING);
 							break;
 						default:
 							break;
@@ -156,6 +160,13 @@ public class AddItemDialog extends DialogFragment{
 			builder.setTitle((String)(getArguments().get("message")));
 			return builder.create();
 		}
+	public void addItemAndUpdate(String item, Fodmap fm) {
+		FodmapItem fmi = new FodmapItem(item, fm);
+		knownFodmapItems.add(fmi);
+		chosenFodmapItems.add(fmi);
+		((FodmapsShopActivity)getActivity()).populateListView();
+		((FodmapsShopActivity)getActivity()).populateActv();
+	}
 	}
 
 }
