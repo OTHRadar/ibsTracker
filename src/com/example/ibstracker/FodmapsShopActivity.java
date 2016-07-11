@@ -23,6 +23,7 @@ public class FodmapsShopActivity extends Activity {
 
 	static List<FodmapItem> knownFodmapItems = new ArrayList<FodmapItem>();
 	static List<FodmapItem> chosenFodmapItems = new ArrayList<FodmapItem>();
+	AutoCompleteTextView actv;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -35,7 +36,10 @@ public class FodmapsShopActivity extends Activity {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.fodmaps_shop);
 	    final Button addButton = (Button)findViewById(R.id.button1);
-	    final AutoCompleteTextView actv = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
+	    actv = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
+	    actv.setThreshold(1);
+	    populateListView();
+	    populateActv();
 		addButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -46,7 +50,7 @@ public class FodmapsShopActivity extends Activity {
 	}
 	private void addItemToListView(String text) {
 		for (FodmapItem fodmapItem : knownFodmapItems) {
-			if (text.equals(fodmapItem)) {
+			if (Utils.toDisplayCase(text).equals(fodmapItem.name) || text.equals(fodmapItem.toString())) {
 				chosenFodmapItems.add(fodmapItem);
 				populateListView();
 				return;
@@ -85,6 +89,32 @@ public class FodmapsShopActivity extends Activity {
 		
 		ListView listView = (ListView)findViewById(R.id.listView1);
 		listView.setAdapter(adapter);
+	}
+	
+private void populateActv() {
+		
+		ArrayAdapter<FodmapItem> adapter = new ArrayAdapter<FodmapItem>(this, R.layout.fodmap_shop_item_red, knownFodmapItems) {
+		    @Override
+		    public View getView(int position, View convertView, ViewGroup parent) {
+		
+		        TextView textView = (TextView)super.getView(position, convertView, parent);
+		
+		        FodmapItem item = getItem(position);
+		        if (item.fodmap == Fodmap.WARNING) {
+		        	textView = (TextView) getLayoutInflater().inflate(R.layout.fodmap_shop_item_red, null);
+		        }
+		        else if (item.fodmap == Fodmap.CAUTION) {
+		        	textView = (TextView) getLayoutInflater().inflate(R.layout.fodmap_shop_item_yellow, null);
+		        }
+		        else if (item.fodmap == Fodmap.ALL_CLEAR) {
+		        	textView = (TextView) getLayoutInflater().inflate(R.layout.fodmap_shop_item_green, null);
+		        }
+		        textView.setText(item.toString());
+		        return textView;
+		    }
+		};
+
+		actv.setAdapter(adapter);
 	}
 	
 public class AddItemDialog extends DialogFragment{
